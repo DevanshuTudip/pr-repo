@@ -19,7 +19,7 @@ pipeline {
                 sh 'ls && date && cat index.html && sleep 5'
                 sh 'printenv && env'
                 echo "Pull request title: ${env.CHANGE_TITLE}"
-                sh ' ${env.CHANGE_TITLE} | sed \'s/.*\(@.*\)/\1/\''
+                // sh ' ${env.CHANGE_TITLE} | sed \'s/.*\(@.*\)/\1/\''
             }
         }
     }
