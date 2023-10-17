@@ -1,16 +1,6 @@
 pipeline {
     agent any
 
-    triggers {
-        githubPullRequest {
-            adminlist('admin')
-            // orgWhitelist('your-organization')
-            cron('H/5 * * * *')
-            // triggerPhrase('build this please')
-            useGitHubHooks(true)
-        }
-    }
-
     stages {
         stage('Checkout') {
             steps {
