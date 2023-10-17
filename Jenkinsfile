@@ -17,7 +17,7 @@ pipeline {
             steps {
                 // Add your build steps here
                 sh 'ls && date && cat index.html && sleep 5'
-                echo "Pull request title: ${env.CI_PULL_REQUEST}"
+                echo "Pull request title: ${env.BUILD_PULL_REQUEST_TITLE}"
             }
         }
     }
