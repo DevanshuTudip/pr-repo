@@ -11,6 +11,9 @@ pipeline {
             }
         }
         stage('test') {
+            when {
+              branch "PR-*"
+            }
             steps {
                 // Add your build steps here
                 sh 'ls && date && cat index.html && sleep 5'
