@@ -17,6 +17,7 @@ pipeline {
             steps {
                 // Add your build steps here
                 sh 'ls && date && cat index.html && sleep 5'
+                sh 'printenv && env'
                 echo "Pull request title: ${env.BRANCH_NAME}"
             }
         }
