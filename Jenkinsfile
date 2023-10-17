@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     // Checkout the code from a GitHub repository
-                    git branch: 'main', credentialsId: '7466fc2c-8ba4-4282-9492-b13a7bd3a2ca', url: 'https://github.com/DevanshuTudip/pr-repo.git'
+                    git branch: "${env.BRANCH_NAME}", credentialsId: '7466fc2c-8ba4-4282-9492-b13a7bd3a2ca', url: 'https://github.com/DevanshuTudip/pr-repo.git'
                 }
             }
         }
