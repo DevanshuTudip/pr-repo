@@ -13,7 +13,7 @@ pipeline {
         stage('test') {
             steps {
                 // Add your build steps here
-                sh 'ls && date && cat index.html'
+                sh 'ls && date && cat index.html && sleep 5'
             }
         }
     }
