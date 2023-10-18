@@ -10,33 +10,34 @@ pipeline {
                 }
             }
         }
-    stage('fetch tag and env from the PR') {
-        when {
-            branch "PR-*"
-        }
-        steps {
-            // Add your build steps here
-            sh 'ls && date && cat index.html && sleep 5'
-            sh 'printenv && env'
-            echo "Pull request title: ${env.CHANGE_TITLE}"
-            script {
-                env.env = sh(
-                    script: "echo \${CHANGE_TITLE} | sed -n 's/.*\\(@[[:alnum:]]*\\).*/\\1/p'",
-                    returnStdout: true
-                ).trim()
-                env.tag = sh(
-                    script: "echo \${CHANGE_TITLE} | sed -n 's/.*#\\([[:alnum:]]*\\)\\( @\\)*.*/\\1/p'",
-                    returnStdout: true
-                ).trim()
+        stage('fetch tag and env from the PR') {
+            when {
+                branch "PR-*"
+            }
+            steps {
+                // Add your build steps here
+                sh 'ls && date && cat index.html && sleep 5'
+                sh 'printenv && env'
+                echo "Pull request title: ${env.CHANGE_TITLE}"
+                script {
+                    env.env = sh(
+                        script: "echo \${CHANGE_TITLE} | sed -n 's/.*\\(@[[:alnum:]]*\\).*/\\1/p'",
+                        returnStdout: true
+                    ).trim()
+                    env.tag = sh(
+                        script: "echo \${CHANGE_TITLE} | sed -n 's/.*#\\([[:alnum:]]*\\)\\( @\\)*.*/\\1/p'",
+                        returnStdout: true
+                    ).trim()
+                }
             }
         }
-    }
-    stage('Using the Env variable in another step') {
-        when {
-            branch "PR-*"
-        }
-        steps {
-           echo "npx nx run cucumber-tests:test:qa --tag=${env.tag} --env=${env.env}"
+        stage('Using the Env variable in another step') {
+            when {
+                branch "PR-*"
+            }
+            steps {
+               echo "npx nx run cucumber-tests:test:qa --tag=${env.tag} --env=${env.env}"
+            }
         }
     }
 
