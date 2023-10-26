@@ -28,7 +28,7 @@ pipeline {
                         script: "echo \${CHANGE_TITLE} | sed -n 's/.*#\\([[:alnum:]]*\\)\\( @\\)*.*/\\1/p'",
                         returnStdout: true
                     ).trim()
-                    if (tag.isEmpty() || env.isEmpty()) {
+                    if (tag == '' || env == '') {
                         currentBuild.result = 'ABORTED'
                         error('Tag or environment not found in the PR title. Aborting the pipeline.')
                     }
