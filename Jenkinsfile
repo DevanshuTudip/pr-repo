@@ -40,15 +40,15 @@ pipeline {
                         }
                     }
                     sh 'env | grep -E "ENV|ORG|Tag"'
-                    env.env = sh(
-                        script: "echo \${CHANGE_TITLE} | sed -n 's/.*\\(@[[:alnum:]]*\\).*/\\1/p'",
-                        returnStdout: true
-                    ).trim()
-                    env.tag = sh(
-                        script: "echo \${CHANGE_TITLE} | sed -n 's/.*#\\([[:alnum:]]*\\)\\( @\\)*.*/\\1/p'",
-                        returnStdout: true
-                    ).trim()
-                    if (tag == '' || env == '') {
+                    // env.env = sh(
+                    //     script: "echo \${CHANGE_TITLE} | sed -n 's/.*\\(@[[:alnum:]]*\\).*/\\1/p'",
+                    //     returnStdout: true
+                    // ).trim()
+                    // env.tag = sh(
+                    //     script: "echo \${CHANGE_TITLE} | sed -n 's/.*#\\([[:alnum:]]*\\)\\( @\\)*.*/\\1/p'",
+                    //     returnStdout: true
+                    // ).trim()
+                    if ( Tag == '' || ENV == '' || ORG == '' ) {
                         currentBuild.result = 'ABORTED'
                         error('Tag or environment not found in the PR title. Aborting the pipeline.')
                     }
@@ -60,7 +60,7 @@ pipeline {
                 branch "PR-*"
             }
             steps {
-               echo "npx nx run cucumber-tests:test:qa --tag=${env.tag} --env=${env.env}"
+               echo "npx nx run cucumber-tests:test:qa --tag=${env.Tag} --env=${env.ENV} --org=${env.ORG}"
             }
         }
     }
