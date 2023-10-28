@@ -39,6 +39,7 @@ pipeline {
                             }
                         }
                     }
+                    sh 'env | grep -E "ENV|ORG|Tag"'
                     env.env = sh(
                         script: "echo \${CHANGE_TITLE} | sed -n 's/.*\\(@[[:alnum:]]*\\).*/\\1/p'",
                         returnStdout: true
