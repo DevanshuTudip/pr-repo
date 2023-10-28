@@ -23,7 +23,19 @@ pipeline {
                     def prNumber = env.CHANGE_ID // Extracting the PR number from the CHANGE_ID
                     def apiUrl = "https://api.github.com/repos/DevanshuTudip/pr-repo/pulls/${env.CHANGE_ID}"
                     def response = httpRequest(url: apiUrl, authentication: '02296c52-d341-452c-9740-94f2bda25732')
-                    def labels = response.getData().labels.collect { it.name }
+                    if (response.status == 200) {
+                        def jsonResponse = readJSON text: response.content
+                        def labels = jsonResponse.labels.collect { it.name }
+                        
+                        echo "PR Labels: ${labels}"
+                        
+                        // Rest of your code
+                        // ...
+                    } else {
+                        error "Failed to fetch PR data. HTTP Status Code: ${response.status}"
+                    }
+                    
+                    // def labels = response.getData().labels.collect { it.name }
                     echo "response: ${response}"
                     echo "PR Labels: ${labels}"
 
