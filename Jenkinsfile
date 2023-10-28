@@ -26,19 +26,10 @@ pipeline {
                     if (response.status == 200) {
                         def jsonResponse = readJSON text: response.content
                         def labels = jsonResponse.labels.collect { it.name }
-                        
                         echo "PR Labels: ${labels}"
-                        
-                        // Rest of your code
-                        // ...
                     } else {
                         error "Failed to fetch PR data. HTTP Status Code: ${response.status}"
                     }
-                    
-                    // def labels = response.getData().labels.collect { it.name }
-                    echo "response: ${response}"
-                    echo "PR Labels: ${labels}"
-
                     env.env = sh(
                         script: "echo \${CHANGE_TITLE} | sed -n 's/.*\\(@[[:alnum:]]*\\).*/\\1/p'",
                         returnStdout: true
@@ -47,10 +38,10 @@ pipeline {
                         script: "echo \${CHANGE_TITLE} | sed -n 's/.*#\\([[:alnum:]]*\\)\\( @\\)*.*/\\1/p'",
                         returnStdout: true
                     ).trim()
-                    // if (tag == '' || env == '') {
-                    //     currentBuild.result = 'ABORTED'
-                    //     error('Tag or environment not found in the PR title. Aborting the pipeline.')
-                    // }
+                    if (tag == '' || env == '') {
+                        currentBuild.result = 'ABORTED'
+                        error('Tag or environment not found in the PR title. Aborting the pipeline.')
+                    }
                 }
             }
         }
