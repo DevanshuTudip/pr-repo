@@ -24,10 +24,8 @@ pipeline {
                     def apiUrl = "https://api.github.com/repos/DevanshuTudip/pr-repo/pulls/${env.CHANGE_ID}"
                     def response = httpRequest(url: apiUrl, authentication: '7466fc2c-8ba4-4282-9492-b13a7bd3a2ca')
                     def labels = response.getData().labels.collect { it.name }
-
                     echo "PR Labels: ${labels}"
-                }
-                script {
+                    
                     env.env = sh(
                         script: "echo \${CHANGE_TITLE} | sed -n 's/.*\\(@[[:alnum:]]*\\).*/\\1/p'",
                         returnStdout: true
