@@ -16,8 +16,8 @@ pipeline {
             }
             steps {
                 // Add your build steps here
-                sh 'ls && date && cat index.html' 
-                sh 'printenv && env'
+                // sh 'ls && date && cat index.html' 
+                // sh 'printenv && env'
                 echo "Pull request title: ${env.CHANGE_TITLE}"
                 script {
                     def prNumber = env.CHANGE_ID // Extracting the PR number from the CHANGE_ID
@@ -27,6 +27,12 @@ pipeline {
                         def jsonResponse = readJSON text: response.content
                         def labels = jsonResponse.labels.collect { it.name }
                         echo "PR Labels: ${labels}"
+                        for (int i = 0; i < labels.size(); i++) {
+                            def envVarName = "PR_LABEL_${i+1}"
+                            env."${envVarName}" = labels[i]
+                        }
+                        // Print all the environment variables
+                        sh 'env | grep PR_LABEL'
                     } else {
                         error "Failed to fetch PR data. HTTP Status Code: ${response.status}"
                     }
