@@ -22,7 +22,7 @@ pipeline {
                 script {
                     def prNumber = env.CHANGE_ID // Extracting the PR number from the CHANGE_ID
                     def apiUrl = "https://api.github.com/repos/DevanshuTudip/pr-repo/pulls/${env.CHANGE_ID}"
-                    def response = httpRequest(url: apiUrl, authentication: '7466fc2c-8ba4-4282-9492-b13a7bd3a2ca')
+                    def response = httpRequest(url: apiUrl, authentication: '02296c52-d341-452c-9740-94f2bda25732')
                     def labels = response.getData().labels.collect { it.name }
                     echo "response: ${response}"
                     echo "PR Labels: ${labels}"
