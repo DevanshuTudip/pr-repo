@@ -37,6 +37,8 @@ pipeline {
                             else {
                                 echo "Label format not recognized: ${labels[i]}"
                             }
+                        }
+                    }
                     env.env = sh(
                         script: "echo \${CHANGE_TITLE} | sed -n 's/.*\\(@[[:alnum:]]*\\).*/\\1/p'",
                         returnStdout: true
