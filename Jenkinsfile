@@ -28,14 +28,15 @@ pipeline {
                         def labels = jsonResponse.labels.collect { it.name }
                         echo "PR Labels: ${labels}"
                         for (int i = 0; i < labels.size(); i++) {
-                            def envVarName = "PR_LABEL_${i+1}"
-                            env."${envVarName}" = labels[i]
-                        }
-                        // Print all the environment variables
-                        sh 'env | grep PR_LABEL'
-                    } else {
-                        error "Failed to fetch PR data. HTTP Status Code: ${response.status}"
-                    }
+                            def parts = labels[i].tokenize('-')
+                            if (parts.size() == 2) {
+                                def key = parts[0].trim()
+                                def value = parts[1].trim()
+                                env."${key}" = value
+                            } 
+                            else {
+                                echo "Label format not recognized: ${labels[i]}"
+                            }
                     env.env = sh(
                         script: "echo \${CHANGE_TITLE} | sed -n 's/.*\\(@[[:alnum:]]*\\).*/\\1/p'",
                         returnStdout: true
